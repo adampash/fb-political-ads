@@ -117,7 +117,7 @@ class App extends Component {
         <Form onSubmit={this.fetchData}>
           <SearchInput
             value={query}
-            placeHolder="Search for a politician"
+            placeHolder="Search for a politician and hit 'Enter'"
             onChange={this.updateQuery}
           />
         </Form>
