@@ -49,7 +49,7 @@ class App extends Component {
 
       const pageQuery = this.constructPageQuery(true);
 
-      const response = await fetch(`${API_URL}/search-ads${pageQuery}`);
+      const response = await fetch(`${API_URL}/search-ads${pageQuery}`, { mode: "cors" });
       const data = await response.json();
       console.log(`data`, data);
       // only update the matched pages array if the query has changed
