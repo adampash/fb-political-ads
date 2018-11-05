@@ -69,6 +69,8 @@ functions:
       - http:
           path: search-ads
           method: get
+          cors: true
+
       # Ping every 5 minutes to avoid cold starts
       - schedule:
           rate: rate(5 minutes)
