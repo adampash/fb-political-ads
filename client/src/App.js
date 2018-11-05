@@ -11,7 +11,7 @@ import {
   Loading
 } from "./styles";
 
-const API_URL = process.env.API_URL || "http://localhost:3000";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
 const ADS_URL =
   "https://www.facebook.com/ads/archive/?active_status=all&ad_type=political_and_issue_ads&country=US&page_ids[0]=PAGE_ID&q=QUERY_STR";
 
@@ -114,7 +114,7 @@ class App extends Component {
     return (
       <>
         <Form onSubmit={this.fetchData}>
-          <SearchInput value={query} onChange={this.updateQuery} />
+          <SearchInput value={query} placeHolder="Search for a politician" onChange={this.updateQuery} />
         </Form>
         {loading && <Loading>Loading...</Loading>}
         <Wrapper>
