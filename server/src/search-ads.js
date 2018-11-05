@@ -1,4 +1,4 @@
-import { successResponse, runWarm } from './utils';
+import { corsSuccessResponse, runWarm } from './utils';
 import filterMatchingPages from './utils/filter-matching-pages';
 import fetchAds from './utils/fetch-ads';
 
@@ -11,7 +11,7 @@ const searchAds = async (event, context, callback) => {
 
   const results = await fetchAds(q, matchingPages.map(({ pageID }) => pageID));
 
-  const response = successResponse({
+  const response = corsSuccessResponse({
     ads: results.payload.results,
     fullPayload: results.payload.results.length === results.payload.totalCount,
     totalCount: results.payload.totalCount,
