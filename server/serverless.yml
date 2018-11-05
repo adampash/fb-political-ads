@@ -22,7 +22,7 @@ provider:
   runtime: nodejs8.10
   # If you want to change to a different AWS profile
   # from ~/.aws/credentials, you can do so here
-  profile: default
+  profile: AdamHome
   # you can overwrite defaults here
   #  stage: dev
   #  region: us-east-1
