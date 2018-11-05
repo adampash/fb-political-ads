@@ -27,9 +27,10 @@ class App extends Component {
   };
   componentDidMount() {
     const { q } = queryString.parse(window.location.search);
-    console.log(`q`, q);
-    this.updatePageQuery();
-    this.setState({ query: q }, () => this.fetchData());
+    if (q) {
+      this.updatePageQuery();
+      this.setState({ query: q }, () => this.fetchData());
+    }
   }
 
   updateQuery = e => {
@@ -114,7 +115,11 @@ class App extends Component {
     return (
       <>
         <Form onSubmit={this.fetchData}>
-          <SearchInput value={query} placeHolder="Search for a politician" onChange={this.updateQuery} />
+          <SearchInput
+            value={query}
+            placeHolder="Search for a politician"
+            onChange={this.updateQuery}
+          />
         </Form>
         {loading && <Loading>Loading...</Loading>}
         <Wrapper>
@@ -141,7 +146,7 @@ class App extends Component {
                           page.pageID
                         )}
                       >
-                        {page.pageName}   ↗
+                        {page.pageName} ↗
                       </a>
                     </div>
                   ))}
