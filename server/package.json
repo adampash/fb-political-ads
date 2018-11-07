@@ -40,7 +40,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "node-fetch": "^2.2.1"
+    "node-fetch": "^2.2.1",
+    "openfec": "^0.8.5"
   },
   "lint-staged": {
     "src/**/*.js": [

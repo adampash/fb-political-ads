@@ -75,6 +75,18 @@ functions:
       - schedule:
           rate: rate(5 minutes)
           enabled: true
+  searchFEC:
+    handler: src/search-fec.default
+    events:
+      - http:
+          path: search-fec
+          method: get
+          cors: true
+
+      # Ping every 5 minutes to avoid cold starts
+      - schedule:
+          rate: rate(5 minutes)
+          enabled: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

@@ -5373,6 +5373,10 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+openfec@^0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/openfec/-/openfec-0.8.5.tgz#896ca7f1299d6c7b41c7880acbab3164bc4108b1"
+
 opn@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.3.0.tgz#64871565c863875f052cfdf53d3e3cb5adb53b1c"

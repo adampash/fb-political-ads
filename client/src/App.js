@@ -7,13 +7,11 @@ import {
   SearchInput,
   Container,
   Sidebar,
-  Results,
   Loading
 } from "./styles";
+import PaidForBy from "./PaidForBy";
+import { API_URL } from "./constants";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
-const ADS_URL =
-  "https://www.facebook.com/ads/archive/?active_status=all&ad_type=political_and_issue_ads&country=US&page_ids[0]=PAGE_ID&q=QUERY_STR";
 
 class App extends Component {
   state = {
@@ -49,7 +47,9 @@ class App extends Component {
 
       const pageQuery = this.constructPageQuery(true);
 
-      const response = await fetch(`${API_URL}/search-ads${pageQuery}`, { mode: "cors" });
+      const response = await fetch(`${API_URL}/search-ads${pageQuery}`, {
+        mode: "cors"
+      });
       const data = await response.json();
       console.log(`data`, data);
       // only update the matched pages array if the query has changed
@@ -109,7 +109,6 @@ class App extends Component {
     const {
       data: { matchingPages },
       query,
-      removedPages,
       loading
     } = this.state;
     return (
@@ -129,26 +128,7 @@ class App extends Component {
               {matchingPages.length === 0 && !loading
                 ? "No matching pages"
                 : matchingPages.map(page => (
-                    <div key={page.pageID}>
-                      {/* <input */}
-                      {/*   type="checkbox" */}
-                      {/*   onChange={this.togglePageFilter} */}
-                      {/*   id={page.pageID} */}
-                      {/*   value={page.pageID} */}
-                      {/*   checked={!removedPages.includes(page.pageID)} */}
-                      {/* /> */}
-                      {/* <label htmlFor={page.pageID}>{page.pageName}</label> */}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={ADS_URL.replace("QUERY_STR", query).replace(
-                          "PAGE_ID",
-                          page.pageID
-                        )}
-                      >
-                        {page.pageName} ↗
-                      </a>
-                    </div>
+                    <PaidForBy page={page} key={page.pageID} query={query} />
                   ))}
             </Sidebar>
             {/* <Results> */}

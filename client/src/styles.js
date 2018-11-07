@@ -27,6 +27,7 @@ export const SearchInput = styled.input`
   font-size: 14px;
   border: 1px solid #eee;
   outline: none;
+  z-index: 100;
 `;
 
 export const Container = styled.main`
