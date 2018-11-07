@@ -15,6 +15,10 @@ const Details = styled.div`
   ul {
     margin: 6px 0;
   }
+  span {
+    color: #651515;
+    font-weight: bold;
+  }
 `;
 
 const Loading = styled.div`
@@ -75,7 +79,7 @@ class PaidForBy extends Component {
       <Details>
         {candidateMatches.results.length === 0 &&
           committeeMatches.results.length === 0 &&
-          `No matches for "${this.props.page.pageName}" in the FEC data`}
+            <span>🚫 No matches for "{this.props.page.pageName}" in the FEC data</span>}
         {candidateMatches.results.length > 0 && (
           <div>
             Candidate matches:
