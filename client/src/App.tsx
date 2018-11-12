@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import * as React from "react";
 import queryString from "query-string";
+
 import "./App.css";
 import {
   Wrapper,
@@ -7,13 +8,25 @@ import {
   SearchInput,
   Container,
   Sidebar,
-  Loading
+  Loading,
+  Results
 } from "./styles";
 import PaidForBy from "./PaidForBy";
+import PageDetails from "./PageDetails";
 import { API_URL } from "./constants";
+import { Page } from "../types";
 
+interface State {
+  query: string;
+  lastQuery: string | null;
+  removedPages: [];
+  data: {
+    matchingPages: Page[];
+  };
+  loading: boolean;
+}
 
-class App extends Component {
+class App extends React.Component {
   state = {
     query: "",
     lastQuery: null,
@@ -31,13 +44,13 @@ class App extends Component {
     }
   }
 
-  updateQuery = e => {
+  updateQuery = (e: React.SyntheticEvent<any>) => {
     const query = e.currentTarget.value;
     const search = `?q=${query}`;
     this.setState({ query, location: search });
   };
 
-  fetchData = async e => {
+  fetchData = async (e?: React.SyntheticEvent<any>) => {
     this.setState({ loading: true });
     try {
       if (e) {
@@ -87,23 +100,23 @@ class App extends Component {
     return pageUrl;
   }
 
-  togglePageFilter = e => {
-    const page = e.currentTarget.value;
-    const { removedPages } = this.state;
-    const updatedPages = removedPages.includes(page)
-      ? removedPages.filter(id => id !== page)
-      : [...removedPages, page];
-
-    this.setState(
-      {
-        removedPages: updatedPages
-      },
-      () => {
-        this.updatePageQuery();
-        this.fetchData();
-      }
-    );
-  };
+  // togglePageFilter = e => {
+  //   const page = e.currentTarget.value;
+  //   const { removedPages } = this.state;
+  //   const updatedPages = removedPages.includes(page)
+  //     ? removedPages.filter(id => id !== page)
+  //     : [...removedPages, page];
+  //
+  //   this.setState(
+  //     {
+  //       removedPages: updatedPages
+  //     },
+  //     () => {
+  //       this.updatePageQuery();
+  //       this.fetchData();
+  //     }
+  //   );
+  // };
 
   render() {
     const {
@@ -112,7 +125,7 @@ class App extends Component {
       loading
     } = this.state;
     return (
-      <>
+      <div>
         <Form onSubmit={this.fetchData}>
           <SearchInput
             value={query}
@@ -127,16 +140,17 @@ class App extends Component {
               <h4>Matching pages</h4>
               {matchingPages.length === 0 && !loading
                 ? "No matching pages"
-                : matchingPages.map(page => (
+                : matchingPages.map((page: Page) => (
                     <PaidForBy page={page} key={page.pageID} query={query} />
                   ))}
             </Sidebar>
-            {/* <Results> */}
-            {/*   <h4>Results</h4> */}
-            {/* </Results> */}
+            <Results>
+              <h4>Results</h4>
+              <PageDetails name="foo" />
+            </Results>
           </Container>
         </Wrapper>
-      </>
+      </div>
     );
   }
 }

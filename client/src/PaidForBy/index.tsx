@@ -1,63 +1,28 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import * as React from "react";
 
-import { API_URL } from "./constants";
+import { API_URL, ADS_URL } from "../constants";
+import { Page, FECMatch } from "../../types"; 
+import { Details, PageLink, Loading } from './styles'
 
-const ADS_URL =
-  "https://www.facebook.com/ads/archive/?active_status=all&ad_type=political_and_issue_ads&country=US&page_ids[0]=PAGE_ID&q=QUERY_STR";
+interface Props {
+  page: Page;
+  query: string;
+}
 
-const PageLink = styled.a`
-  font-weight: bold;
-`;
-const Details = styled.div`
-  padding: 0 16px;
-  font-size: 12px;
-  ul {
-    margin: 6px 0;
-  }
-  span {
-    color: #651515;
-    font-weight: bold;
-  }
-`;
+interface State {
+  candidateMatches: FECMatch;
+  committeeMatches: FECMatch;
+  fecSearchComplete: boolean;
+}
 
-const Loading = styled.div`
-  display: inline-block;
-  position: relative;
-  width: 14px;
-  height: 14px;
-  div {
-    position: absolute;
-    border: 4px solid #651515;
-    opacity: 1;
-    border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-  }
-  div:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  @keyframes lds-ripple {
-    0% {
-      top: 6px;
-      left: 6px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-    100% {
-      top: -1px;
-      left: -1px;
-      width: 12px;
-      height: 12px;
-      opacity: 0;
-    }
-  }
-`;
-
-class PaidForBy extends Component {
-  state = {
-    candidateMatches: [],
-    committeeMatches: [],
+class PaidForBy extends React.Component<Props, State> {
+  state: State = {
+    candidateMatches: {
+      results: []
+    },
+    committeeMatches: {
+      results: []
+    },
     fecSearchComplete: false
   };
 
@@ -78,8 +43,11 @@ class PaidForBy extends Component {
     return (
       <Details>
         {candidateMatches.results.length === 0 &&
-          committeeMatches.results.length === 0 &&
-            <span>🚫 No matches for "{this.props.page.pageName}" in the FEC data</span>}
+          committeeMatches.results.length === 0 && (
+            <span>
+              🚫 No matches for "{this.props.page.pageName}" in the FEC data
+            </span>
+          )}
         {candidateMatches.results.length > 0 && (
           <div>
             Candidate matches:
@@ -106,9 +74,7 @@ class PaidForBy extends Component {
 
   render() {
     const { page, query } = this.props;
-    const {
-      fecSearchComplete,
-    } = this.state;
+    const { fecSearchComplete } = this.state;
 
     return (
       <div key={page.pageID}>
