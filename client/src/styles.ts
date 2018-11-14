@@ -58,6 +58,9 @@ export const Container = styled.main`
 
 export const Sidebar = styled.div`
   position: fixed;
+  overflow-y: scroll;
+  bottom: 0;
+  top: 96px;
   margin-left: -16px;
   label {
     font-size: 12px;
@@ -94,7 +97,7 @@ export const Loading = styled.div`
 export const Alert = styled.div`
   display: flex;
   align-items: center;
-  background: #F9A825;
+  background: #f9a825;
   font-weight: bold;
   color: white;
   font-size: 14px;
@@ -104,4 +107,3 @@ export const Alert = styled.div`
     margin-right: 16px;
   }
 `;
-
