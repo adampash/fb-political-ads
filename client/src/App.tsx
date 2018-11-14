@@ -15,6 +15,7 @@ import PaidForBy from "./PaidForBy";
 import PageDetails from "./PageDetails";
 import { API_URL } from "./constants";
 import { Page } from "../types";
+import api from "./utils/cacheFetch";
 
 interface State {
   query: string;
@@ -24,6 +25,7 @@ interface State {
     matchingPages: Page[];
   };
   loading: boolean;
+  activePage: Page | null;
 }
 
 class App extends React.Component {
@@ -34,7 +36,8 @@ class App extends React.Component {
     data: {
       matchingPages: []
     },
-    loading: false
+    loading: false,
+    activePage: null
   };
   componentDidMount() {
     const { q } = queryString.parse(window.location.search);
@@ -58,12 +61,7 @@ class App extends React.Component {
         this.updatePageQuery();
       }
 
-      const pageQuery = this.constructPageQuery(true);
-
-      const response = await fetch(`${API_URL}/search-ads${pageQuery}`, {
-        mode: "cors"
-      });
-      const data = await response.json();
+      const data = await api.searchAds(this.state.query);
       console.log(`data`, data);
       // only update the matched pages array if the query has changed
       if (this.state.lastQuery === this.state.query) {
@@ -117,12 +115,25 @@ class App extends React.Component {
   //     }
   //   );
   // };
+  viewPageDetails = (e: React.SyntheticEvent<any>) => {
+    console.log(`e.currentTarget.id`, e.currentTarget.id);
+    e.preventDefault();
+    const {
+      data: { matchingPages }
+    } = this.state;
+    this.setState({
+      activePage: matchingPages.find(
+        ({ pageID }: Page) => pageID === e.currentTarget.id
+      )
+    });
+  };
 
   render() {
     const {
       data: { matchingPages },
       query,
-      loading
+      loading,
+      activePage
     } = this.state;
     return (
       <div>
@@ -137,16 +148,20 @@ class App extends React.Component {
         <Wrapper>
           <Container>
             <Sidebar>
-              <h4>Matching pages</h4>
               {matchingPages.length === 0 && !loading
                 ? "No matching pages"
                 : matchingPages.map((page: Page) => (
-                    <PaidForBy page={page} key={page.pageID} query={query} />
+                    <PaidForBy
+                      page={page}
+                      key={page.pageID}
+                      activePage={activePage || { pageID: "" }}
+                      query={query}
+                      activatePage={this.viewPageDetails}
+                    />
                   ))}
             </Sidebar>
             <Results>
-              <h4>Results</h4>
-              <PageDetails name="foo" />
+              {activePage && <PageDetails {...activePage} query={query} />}
             </Results>
           </Container>
         </Wrapper>

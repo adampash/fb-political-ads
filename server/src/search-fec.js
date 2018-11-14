@@ -3,7 +3,7 @@ import openfec from 'openfec'
 import { corsSuccessResponse, runWarm } from './utils';
 
 const searchFec = async (event, context, callback) => {
-  openfec.init('n3sM8xCKteNEfGSoChAQKHZzTp6SJ069BT0ZJ8uy')
+  openfec.init('i6kWH1gZoMQRruQajrQS9YeyPLUfZXh3ip1nL0PO')
   const {
     queryStringParameters: { q },
   } = event;

@@ -1,4 +1,4 @@
-export interface Ad {
+export interface IAd {
   adArchiveID: string;
   adid: string;
   archiveTypes: number[];
@@ -14,16 +14,22 @@ export interface Ad {
     byline: string;
     caption: string;
     body: {
-      __html: string;
+      markup: { __html: string };
     };
-    display_format: "video" | "image";
+    display_format: "video" | "image" | "text";
     link_url: string;
     page_profile_uri: string;
     page_profile_picture_url: string;
     title: string;
-    video: Video[];
+    videos: Video[];
+    images: Image[];
   };
   startDate: number;
+}
+
+interface Image {
+  original_image_url: string;
+  resized_image_url: string;
 }
 
 interface Video {

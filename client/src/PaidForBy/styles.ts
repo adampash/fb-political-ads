@@ -1,7 +1,37 @@
 import styled from "styled-components";
 
-export const PageLink = styled.a`
-  font-weight: bold;
+interface PageLinkProps {
+  noMatch: boolean;
+  active: boolean;
+}
+export const PageLink = styled<PageLinkProps, "a">("a")`
+  position: relative;
+  display: block;
+  padding: 6px 3px;
+  max-width: 275px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 2px solid #fff;
+  border-top: 2px solid #fff;
+  ${({ active }) =>
+    active &&
+    `
+    font-weight: bold;
+    border-bottom: 2px solid #999;
+    border-top: 2px solid #999;
+    padding: 16px 3px;
+  `};
+  transition: padding 0.2s, border 0.2s;
+  ${({ noMatch }) =>
+    noMatch &&
+    `
+    &:after {
+      content "*";
+      color: red;
+    }
+  `};
 `;
 export const Details = styled.div`
   padding: 0 16px;
@@ -15,36 +45,23 @@ export const Details = styled.div`
   }
 `;
 
-export const Loading = styled.div`
-  display: inline-block;
-  position: relative;
-  width: 14px;
-  height: 14px;
-  div {
-    position: absolute;
-    border: 4px solid #651515;
-    opacity: 1;
-    border-radius: 50%;
-    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+export const Loading = styled.span`
+  &:after {
+    content: "|";
   }
-  div:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  @keyframes lds-ripple {
-    0% {
-      top: 6px;
-      left: 6px;
-      width: 0;
-      height: 0;
-      opacity: 1;
+  margin-left: 10px;
+  position: absolute;
+  right: 0;
+  animation-name: spin;
+  animation-duration: 1500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
     }
-    100% {
-      top: -1px;
-      left: -1px;
-      width: 12px;
-      height: 12px;
-      opacity: 0;
+    to {
+      transform: rotate(360deg);
     }
   }
 `;
-

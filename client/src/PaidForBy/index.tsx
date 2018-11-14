@@ -1,18 +1,23 @@
 import * as React from "react";
 
 import { API_URL, ADS_URL } from "../constants";
-import { Page, FECMatch } from "../../types"; 
-import { Details, PageLink, Loading } from './styles'
+import { Page, FECMatch } from "../../types";
+import { Details, PageLink, Loading } from "./styles";
+import cacheFetch from "../utils/cacheFetch";
+import api from "../utils/cacheFetch";
 
 interface Props {
   page: Page;
   query: string;
+  activatePage: (e: React.SyntheticEvent<any>) => void;
+  activePage: Page | { pageID: string };
 }
 
 interface State {
   candidateMatches: FECMatch;
   committeeMatches: FECMatch;
   fecSearchComplete: boolean;
+  noMatch: boolean;
 }
 
 class PaidForBy extends React.Component<Props, State> {
@@ -23,19 +28,25 @@ class PaidForBy extends React.Component<Props, State> {
     committeeMatches: {
       results: []
     },
-    fecSearchComplete: false
+    fecSearchComplete: false,
+    noMatch: false
   };
 
   async componentDidMount() {
     const {
       page: { pageName }
     } = this.props;
-    const response = await fetch(`${API_URL}/search-fec?q=${pageName}`, {
-      mode: "cors"
-    });
-    const fecData = await response.json();
+    // const response = await fetch(`${API_URL}/search-fec?q=${pageName}`, {
+    //   mode: "cors"
+    // });
+    // const fecData = await response.json();
+    const fecData = await api.searchFEC(pageName);
     console.log(`fecData`, fecData);
-    this.setState({ ...fecData, fecSearchComplete: true });
+    const { candidateMatches, committeeMatches } = fecData;
+    const noMatch =
+      candidateMatches.results.length === 0 &&
+      committeeMatches.results.length === 0;
+    this.setState({ ...fecData, fecSearchComplete: true, noMatch });
   }
 
   renderMatches() {
@@ -73,38 +84,27 @@ class PaidForBy extends React.Component<Props, State> {
   }
 
   render() {
-    const { page, query } = this.props;
-    const { fecSearchComplete } = this.state;
+    const { page, query, activatePage, activePage } = this.props;
+    const { fecSearchComplete, noMatch } = this.state;
 
     return (
-      <div key={page.pageID}>
-        {/* <input */}
-        {/*   type="checkbox" */}
-        {/*   onChange={this.togglePageFilter} */}
-        {/*   id={page.pageID} */}
-        {/*   value={page.pageID} */}
-        {/*   checked={!removedPages.includes(page.pageID)} */}
-        {/* /> */}
-        {/* <label htmlFor={page.pageID}>{page.pageName}</label> */}
+      <React.Fragment key={page.pageID}>
         <PageLink
+          id={page.pageID}
+          noMatch={noMatch}
+          active={page.pageID === activePage.pageID}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={activatePage}
           href={ADS_URL.replace("QUERY_STR", query).replace(
             "PAGE_ID",
             page.pageID
           )}
         >
-          {page.pageName} ↗
+          {page.pageName}
+          {fecSearchComplete || <Loading />}
         </PageLink>
-        {fecSearchComplete ? (
-          this.renderMatches()
-        ) : (
-          <Loading>
-            <div />
-            <div />
-          </Loading>
-        )}
-      </div>
+      </React.Fragment>
     );
   }
 }

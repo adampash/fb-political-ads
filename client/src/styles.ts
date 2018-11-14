@@ -42,16 +42,16 @@ export const Sidebar = styled.div`
   a {
     color: #111;
     text-decoration: none;
-    &:hover {
-      color: #651515;
-    }
   }
   div {
     margin: 8px 0;
   }
 `;
 
-export const Results = styled.div``;
+export const Results = styled.div`
+  max-width: 100%;
+  flex-grow: 1;
+`;
 
 export const Loading = styled.div`
   position: absolute;

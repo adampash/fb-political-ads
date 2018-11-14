@@ -75,6 +75,18 @@ functions:
       - schedule:
           rate: rate(5 minutes)
           enabled: true
+  adsForPage:
+    handler: src/ads-for-page.default
+    events:
+      - http:
+          path: ads-for-page
+          method: get
+          cors: true
+
+      # Ping every 5 minutes to avoid cold starts
+      - schedule:
+          rate: rate(5 minutes)
+          enabled: true
   searchFEC:
     handler: src/search-fec.default
     events:
