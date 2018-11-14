@@ -103,7 +103,7 @@ class PageDetails extends React.Component<Props, State> {
           </li>
           <li>
             <a
-              href={`/feed-for-page?pageId=${pageID}&pageName=${pageName}`}
+              href={`/api/feed-for-page?pageId=${pageID}&pageName=${pageName}`}
               target="_blank"
               rel="noopener"
             >
