@@ -143,7 +143,7 @@ class App extends React.Component {
           <div>
             <SearchInput
               value={query}
-              placeholder="Search for a politician and hit 'Enter'"
+              placeholder="Search for a page by name and hit 'Enter'"
               onChange={this.updateQuery}
             />
             <button>
