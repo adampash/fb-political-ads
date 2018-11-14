@@ -11,21 +11,40 @@ export const Wrapper = styled.div`
 
 export const Form = styled.form`
   width: 100%;
+  border: 1px solid #eee;
   position: fixed;
   top: 0;
   padding: 16px;
-  display: flex;
-  justify-content: center;
+  z-index: 100;
+  background: white;
+  div {
+    margin: 0 auto;
+    max-width: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      flex-shrink: 0;
+      cursor: pointer;
+      width: 60px;
+      border: none;
+      outline: none;
+      background: black;
+      color: white;
+      font-size: 14px;
+      border-radius: 0 2px 2px 0;
+      align-self: stretch;
+    }
+  }
 `;
 
 export const SearchInput = styled.input`
   width: 1000px;
   max-width: 100%;
   margin: 0 auto;
-  padding: 12px;
-  border-radius: 2px;
-  font-size: 14px;
+  padding: 13px;
   border: 1px solid #eee;
+  font-size: 14px;
   outline: none;
   z-index: 100;
 `;
@@ -33,9 +52,13 @@ export const SearchInput = styled.input`
 export const Container = styled.main`
   display: flex;
   padding: 16px;
+  width: 1000px;
+  max-width: 100%;
 `;
 
 export const Sidebar = styled.div`
+  position: fixed;
+  margin-left: -16px;
   label {
     font-size: 12px;
   }
@@ -51,6 +74,7 @@ export const Sidebar = styled.div`
 export const Results = styled.div`
   max-width: 100%;
   flex-grow: 1;
+  margin-left: 275px;
 `;
 
 export const Loading = styled.div`
