@@ -7,7 +7,5 @@
   "scripts": {
     "build": "cd ./client && yarn build"
   },
-  "dependencies": {
-    "date-fns": "^1.29.0"
-  }
+  "dependencies": {}
 }
