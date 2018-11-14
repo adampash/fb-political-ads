@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "node-fetch": "^2.2.1",
-    "openfec": "^0.8.5"
+    "openfec": "^0.8.5",
+    "rss": "^1.2.2"
   },
   "lint-staged": {
     "src/**/*.js": [

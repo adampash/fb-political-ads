@@ -102,7 +102,13 @@ class PageDetails extends React.Component<Props, State> {
             </a>
           </li>
           <li>
-            RSS <Icon type={IconType.RSS} />
+            <a
+              href={`/feed-for-page?pageId=${pageID}&pageName=${pageName}`}
+              target="_blank"
+              rel="noopener"
+            >
+              RSS <Icon type={IconType.RSS} />
+            </a>
           </li>
         </ul>
         <SubHead>FEC Matches</SubHead>

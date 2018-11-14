@@ -8,7 +8,6 @@ const adsForPage = async (event, context, callback) => {
   } = event;
   const results = await fetchAds(q, [pageId]);
 
-  console.log(`results`, results);
   const response = corsSuccessResponse({
     ads: results.payload.results,
     fullPayload: results.payload.results.length === results.payload.totalCount,
@@ -19,4 +18,3 @@ const adsForPage = async (event, context, callback) => {
 };
 
 export default runWarm(adsForPage);
-

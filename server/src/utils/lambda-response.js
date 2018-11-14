@@ -42,3 +42,14 @@ export function corsSuccessResponse(json) {
     allowCORS: true,
   });
 }
+
+export function xmlSuccessResponse(xml) {
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/xml',
+      'Access-Control-Allow-Origin': '*',
+    },
+    body: xml,
+  };
+}
