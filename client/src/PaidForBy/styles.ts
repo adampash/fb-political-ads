@@ -7,7 +7,7 @@ interface PageLinkProps {
 export const PageLink = styled<PageLinkProps, "a">("a")`
   position: relative;
   display: block;
-  padding: 6px 3px;
+  padding: 6px 3px 6px 0;
   max-width: 275px;
   min-width: 0;
   white-space: nowrap;
@@ -19,8 +19,8 @@ export const PageLink = styled<PageLinkProps, "a">("a")`
     active &&
     `
     font-weight: bold;
-    border-bottom: 2px solid #999;
-    border-top: 2px solid #999;
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
     padding: 16px 3px;
   `};
   transition: padding 0.2s, border 0.2s;

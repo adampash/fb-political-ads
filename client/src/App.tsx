@@ -2,6 +2,7 @@ import * as React from "react";
 import queryString from "query-string";
 
 import "./App.css";
+import { Icon, IconType } from "./Icon";
 import {
   Wrapper,
   Form,
@@ -9,7 +10,7 @@ import {
   Container,
   Sidebar,
   Loading,
-  Results
+  Results,
 } from "./styles";
 import PaidForBy from "./PaidForBy";
 import PageDetails from "./PageDetails";
@@ -34,10 +35,10 @@ class App extends React.Component {
     lastQuery: null,
     removedPages: [],
     data: {
-      matchingPages: []
+      matchingPages: [],
     },
     loading: false,
-    activePage: null
+    activePage: null,
   };
   componentDidMount() {
     const { q } = queryString.parse(window.location.search);
@@ -67,7 +68,7 @@ class App extends React.Component {
       if (this.state.lastQuery === this.state.query) {
         this.setState({
           data: { ...data, matchingPages: this.state.data.matchingPages },
-          lastQuery: this.state.query
+          lastQuery: this.state.query,
         });
       } else {
         this.setState({ data, lastQuery: this.state.query });
@@ -119,12 +120,12 @@ class App extends React.Component {
     console.log(`e.currentTarget.id`, e.currentTarget.id);
     e.preventDefault();
     const {
-      data: { matchingPages }
+      data: { matchingPages },
     } = this.state;
     this.setState({
       activePage: matchingPages.find(
         ({ pageID }: Page) => pageID === e.currentTarget.id
-      )
+      ),
     });
   };
 
@@ -133,16 +134,21 @@ class App extends React.Component {
       data: { matchingPages },
       query,
       loading,
-      activePage
+      activePage,
     } = this.state;
     return (
       <div>
         <Form onSubmit={this.fetchData}>
-          <SearchInput
-            value={query}
-            placeholder="Search for a politician and hit 'Enter'"
-            onChange={this.updateQuery}
-          />
+          <div>
+            <SearchInput
+              value={query}
+              placeholder="Search for a politician and hit 'Enter'"
+              onChange={this.updateQuery}
+            />
+            <button>
+              <Icon type={IconType.Search} />
+            </button>
+          </div>
         </Form>
         {loading && <Loading>Loading...</Loading>}
         <Wrapper>

@@ -35,6 +35,7 @@ export enum IconType {
   FullscreenExit,
   OpenInNew,
   RSS,
+  Search,
 }
 
 interface IIconMap {
@@ -76,6 +77,7 @@ const ICON_MAP: IIconMap = {
   [IconType.FullscreenExit]: "fullscreen_exit",
   [IconType.OpenInNew]: "open_in_new",
   [IconType.RSS]: "rss_feed",
+  [IconType.Search]: "search",
 };
 
 const getIconName = (type: IconType): string => {
