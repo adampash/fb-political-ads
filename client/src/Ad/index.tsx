@@ -47,7 +47,6 @@ class Ad extends React.Component<Props> {
       flagDeleted();
       return null;
     }
-    console.log("trying adid", snapshot.ad_creative_id);
     const imageSrc =
       display_format === "video"
         ? videos[0].video_preview_image_url

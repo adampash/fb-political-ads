@@ -11,6 +11,7 @@ interface Props {
   pageID: string;
   pageName: string;
   query: string;
+  setFECOverLimit: (fecOverLimit: boolean) => void;
 }
 
 interface State {
@@ -23,6 +24,7 @@ interface State {
     candidateMatches: FECMatch;
   };
   hasDeletedAds: boolean;
+  skipFECData: boolean;
 }
 
 class PageDetails extends React.Component<Props, State> {
@@ -38,6 +40,7 @@ class PageDetails extends React.Component<Props, State> {
       initial: true,
     },
     hasDeletedAds: false,
+    skipFECData: false,
   };
   state = this.defaultState;
   componentWillMount() {
@@ -54,8 +57,14 @@ class PageDetails extends React.Component<Props, State> {
   async fetchData(id: string, name: string) {
     const { query } = this.props;
 
-    const fecData = await api.searchFEC(name);
-    this.setState({ fecData });
+    try {
+      const fecData = await api.searchFEC(name);
+      this.setState({ fecData, skipFECData: false });
+      this.props.setFECOverLimit(false);
+    } catch {
+      this.props.setFECOverLimit(true);
+      this.setState({ skipFECData: true });
+    }
     const data = await api.adsForPage({ query, id });
     this.setState({ data });
   }
@@ -66,10 +75,11 @@ class PageDetails extends React.Component<Props, State> {
 
   render() {
     const { pageName, pageID } = this.props;
-    const { data, fecData, hasDeletedAds } = this.state;
-    const hasFecMatches =
-      fecData.committeeMatches.results.length > 0 ||
-      fecData.candidateMatches.results.length > 0;
+    const { data, fecData, hasDeletedAds, skipFECData } = this.state;
+    const hasFecMatches = skipFECData
+      ? null
+      : fecData.committeeMatches.results.length > 0 ||
+        fecData.candidateMatches.results.length > 0;
     return (
       <Container>
         <h3>{pageName}</h3>
@@ -113,28 +123,31 @@ class PageDetails extends React.Component<Props, State> {
         </ul>
         <SubHead>FEC Matches</SubHead>
         <FECMatches>
-          {!hasFecMatches ? (
-            "No matching candidate or committee in the FEC's data"
-          ) : (
-            <>
-              <div>
-                <b>Committee</b>{" "}
-                {fecData.committeeMatches.results.length > 0
-                  ? fecData.committeeMatches.results
-                      .map(({ name }: { name: string }) => name)
-                      .join(", ")
-                  : "No committee matches"}
-              </div>
-              <div>
-                <b>Candidate</b>{" "}
-                {fecData.candidateMatches.results.length > 0
-                  ? fecData.candidateMatches.results
-                      .map(({ name }: { name: string }) => name)
-                      .join(", ")
-                  : "No candidate matches"}
-              </div>
-            </>
-          )}
+          {skipFECData &&
+            "We're currently over our FEC API limit. Try again in an hour."}
+          {!skipFECData &&
+            (!hasFecMatches ? (
+              "No matching candidate or committee in the FEC's data"
+            ) : (
+              <>
+                <div>
+                  <b>Committee</b>{" "}
+                  {fecData.committeeMatches.results.length > 0
+                    ? fecData.committeeMatches.results
+                        .map(({ name }: { name: string }) => name)
+                        .join(", ")
+                    : "No committee matches"}
+                </div>
+                <div>
+                  <b>Candidate</b>{" "}
+                  {fecData.candidateMatches.results.length > 0
+                    ? fecData.candidateMatches.results
+                        .map(({ name }: { name: string }) => name)
+                        .join(", ")
+                    : "No candidate matches"}
+                </div>
+              </>
+            ))}
         </FECMatches>
         <SubHead>
           Recent ads{" "}

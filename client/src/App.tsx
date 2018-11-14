@@ -11,6 +11,7 @@ import {
   Sidebar,
   Loading,
   Results,
+  Alert,
 } from "./styles";
 import PaidForBy from "./PaidForBy";
 import EmptyPage from "./EmptyPage";
@@ -28,6 +29,7 @@ interface State {
   };
   loading: boolean;
   activePage: Page | null;
+  fecOverLimit: boolean;
 }
 
 class App extends React.Component {
@@ -40,6 +42,7 @@ class App extends React.Component {
     },
     loading: false,
     activePage: null,
+    fecOverLimit: false,
   };
   componentDidMount() {
     const { q } = queryString.parse(window.location.search);
@@ -64,7 +67,6 @@ class App extends React.Component {
       }
 
       const data = await api.searchAds(this.state.query);
-      console.log(`data`, data);
       // only update the matched pages array if the query has changed
       if (this.state.lastQuery === this.state.query) {
         this.setState({
@@ -85,6 +87,10 @@ class App extends React.Component {
     window.history.pushState("", "", this.constructPageQuery());
   }
 
+  setFECOverLimit = (fecOverLimit: boolean) => {
+    this.setState({ fecOverLimit });
+  };
+
   constructPageQuery(withFilter = false) {
     const { query, removedPages } = this.state;
 
@@ -100,25 +106,7 @@ class App extends React.Component {
     return pageUrl;
   }
 
-  // togglePageFilter = e => {
-  //   const page = e.currentTarget.value;
-  //   const { removedPages } = this.state;
-  //   const updatedPages = removedPages.includes(page)
-  //     ? removedPages.filter(id => id !== page)
-  //     : [...removedPages, page];
-  //
-  //   this.setState(
-  //     {
-  //       removedPages: updatedPages
-  //     },
-  //     () => {
-  //       this.updatePageQuery();
-  //       this.fetchData();
-  //     }
-  //   );
-  // };
   viewPageDetails = (e: React.SyntheticEvent<any>) => {
-    console.log(`e.currentTarget.id`, e.currentTarget.id);
     e.preventDefault();
     const {
       data: { matchingPages },
@@ -136,6 +124,7 @@ class App extends React.Component {
       query,
       loading,
       activePage,
+      fecOverLimit,
     } = this.state;
     return (
       <div>
@@ -164,11 +153,26 @@ class App extends React.Component {
                       activePage={activePage || { pageID: "" }}
                       query={query}
                       activatePage={this.viewPageDetails}
+                      setFECOverLimit={this.setFECOverLimit}
                     />
                   ))}
             </Sidebar>
             <Results>
-              {activePage ? <PageDetails {...activePage} query={query} /> : <EmptyPage />}
+              {fecOverLimit && (
+                <Alert>
+                  <Icon type={IconType.Error} /> FEC API calls are currently
+                  over our limit. For FEC data, try back in about an hour
+                </Alert>
+              )}
+              {activePage ? (
+                <PageDetails
+                  {...activePage}
+                  query={query}
+                  setFECOverLimit={this.setFECOverLimit}
+                />
+              ) : (
+                <EmptyPage fecOverLimit={fecOverLimit} />
+              )}
             </Results>
           </Container>
         </Wrapper>

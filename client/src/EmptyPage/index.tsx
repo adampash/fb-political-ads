@@ -2,7 +2,9 @@ import * as React from "react";
 import styled from "styled-components";
 
 import { Icon, IconType } from "../Icon";
-interface Props {}
+interface Props {
+  fecOverLimit: boolean;
+}
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +27,7 @@ const Asterisk = styled.div`
   }
 `;
 
-const EmptyPage = (props: Props) => (
+const EmptyPage = ({ fecOverLimit }: Props) => (
   <>
     <Container>
       <Icon type={IconType.ArrowBack} />{" "}

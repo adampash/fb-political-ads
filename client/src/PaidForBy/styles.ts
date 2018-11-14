@@ -8,8 +8,7 @@ export const PageLink = styled<PageLinkProps, "a">("a")`
   position: relative;
   display: block;
   padding: 6px 3px 6px 0;
-  max-width: 275px;
-  min-width: 0;
+  width: 275px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

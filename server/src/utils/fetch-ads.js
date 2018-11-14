@@ -5,7 +5,6 @@ const fetchAds = async (q, pageIds = []) => {
   const url = `https://www.facebook.com/ads/archive/async/search_ads/?q=${encodeURIComponent(
     q
   )}&count=30&active_status=all&type=all&country=US&dpr=1${pageQuery}`;
-  console.log(`url`, url);
   const resp = await fetch(url, {
     credentials: 'include',
     headers: {

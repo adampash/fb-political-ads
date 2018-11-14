@@ -16,14 +16,13 @@ const cacheFetch = async (url: string, cacheData: boolean = true) => {
     cachedResponse &&
     new Date().getDate() - cachedResponse.fetchedAt < 5 * 60 * 1000
   ) {
-    console.log("IN CACHE for url!!!", url);
+    console.log("IN CACHE", url);
     return cachedResponse.data;
   }
   const response = await fetch(`${API_URL}${url}`, {
     mode: "cors"
   });
   const data = await response.json();
-  console.log(`data`, data);
   if (cacheData) {
     cache[url] = {
       data,

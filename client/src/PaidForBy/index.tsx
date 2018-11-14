@@ -11,6 +11,7 @@ interface Props {
   query: string;
   activatePage: (e: React.SyntheticEvent<any>) => void;
   activePage: Page | { pageID: string };
+  setFECOverLimit: (fecOverLimit: boolean) => void;
 }
 
 interface State {
@@ -23,30 +24,35 @@ interface State {
 class PaidForBy extends React.Component<Props, State> {
   state: State = {
     candidateMatches: {
-      results: []
+      results: [],
     },
     committeeMatches: {
-      results: []
+      results: [],
     },
     fecSearchComplete: false,
-    noMatch: false
+    noMatch: false,
   };
 
   async componentDidMount() {
     const {
-      page: { pageName }
+      page: { pageName },
     } = this.props;
     // const response = await fetch(`${API_URL}/search-fec?q=${pageName}`, {
     //   mode: "cors"
     // });
     // const fecData = await response.json();
-    const fecData = await api.searchFEC(pageName);
-    console.log(`fecData`, fecData);
-    const { candidateMatches, committeeMatches } = fecData;
-    const noMatch =
-      candidateMatches.results.length === 0 &&
-      committeeMatches.results.length === 0;
-    this.setState({ ...fecData, fecSearchComplete: true, noMatch });
+    try {
+      const fecData = await api.searchFEC(pageName);
+      const { candidateMatches, committeeMatches } = fecData;
+      const noMatch =
+        candidateMatches.results.length === 0 &&
+        committeeMatches.results.length === 0;
+      this.props.setFECOverLimit(false);
+      this.setState({ ...fecData, fecSearchComplete: true, noMatch });
+    } catch {
+      this.props.setFECOverLimit(true);
+      this.setState({ fecSearchComplete: true });
+    }
   }
 
   renderMatches() {

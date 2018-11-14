@@ -90,3 +90,18 @@ export const Loading = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const Alert = styled.div`
+  display: flex;
+  align-items: center;
+  background: #F9A825;
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  i {
+    margin-right: 16px;
+  }
+`;
+
